@@ -1,0 +1,39 @@
+{
+
+  "name": "Coop.js",
+  "description": "A helper to allow .bit websites to be viewed via Speech.is",
+  "version": "0.1",
+  "category": "anti-censorship",
+  "main": "coop.js",
+  "config":{
+    "details":{
+      "Language": "English",
+      "Price": "Free",
+      "Restrictions": "None",
+      "TOS":"http://www.cloudflare.com/terms",
+      "has_js": true
+    },
+    "assets":{
+      "logos" : {
+        "200px": "./public/images/logo-200.png",
+        "132px": "./public/images/logo-132.png"
+      },
+      "detail_page" : [
+        "./public/images/example.png"
+      ],
+      "images" : [
+        "./public/images/counter.png"
+      ]
+    },
+    "interface": [
+      {
+        "type": "string",
+        "id": "siteName",
+        "name": ".bit Domain",
+        "description": "What is your .bit domain? (e.g. domain.bit)",
+        "domain_request": true,
+        "private": false
+      }
+    ]
+  }
+}

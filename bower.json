@@ -1,0 +1,25 @@
+{
+  "name": "coop.js",
+  "main": "coop.js",
+  "version": "0.1.0",
+  "authors": [
+    "indolering <zachlym@indolering.com>"
+  ],
+  "description": "Cooperative history syncronization for Speech.js",
+  "keywords": [
+    "Speech.js",
+    "Speech.is"
+  ],
+  "license": "CC0",
+  "homepage": "https://github.com/speech/coop.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "watch": "*"
+  }
+}
