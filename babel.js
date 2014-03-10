@@ -46,8 +46,7 @@ if (window.parent) {
 
   window.onload = function() {
 
-    change('location', null, window.location);
-    change('title', null, document.title);
+
 
 //    change non-relative links to target top page
     var anchors = document.getElementsByTagName('a');
@@ -97,5 +96,9 @@ if (window.parent) {
     if (!favFound) {
       change('favicon', null, window.location.protocol + '//g.etfv.co/' + window.location.origin);
     }
+
+    change('location', null, window.location);
+    change('title', null, document.title);
+
   };
 }
