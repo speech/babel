@@ -5,7 +5,7 @@
 
 function change(id, oldval, newval) {
   var type = 'location';
-  var value = window.location.href;
+  var value = location.href;
 
   if (id === 'title') {
     type = 'title';
@@ -19,6 +19,10 @@ function change(id, oldval, newval) {
 }
 
 if (window.parent) {
+
+  //space savers to fit under arbitrary 1KB size limit
+  var l = window.location;
+  var d = document;
 
   if (!Object.prototype.watch) {  //don't overwrite gecko watch function
     Object.prototype.watch = function(prop, handler) {
@@ -39,22 +43,22 @@ if (window.parent) {
     };
   }
 
-  change('location', null, window.location);
-  change('title', null, document.title);
+  change('location', null, l);
+  change('title', null, d.title);
 
-  window.location.watch('hash', change);
-  window.location.watch('pathway', change);
-  window.location.watch('search', change);
-  document.watch('title', change);
+  l.watch('hash', change);
+  l.watch('pathway', change);
+  l.watch('search', change);
+  d.watch('title', change);
 
   window.onload = function() {
 
     //change non-relative links to target top page
-    var anchors = document.getElementsByTagName('a');
+    var anchors = d.getElementsByTagName('a');
     var absolute = new RegExp('^(?:[a-z]+:)?//', 'i');
     for (var i = 0; i < anchors.length; i++) {
       var anchor = anchors[i];
-      if ((anchor.origin !== window.location.origin) &&
+      if ((anchor.origin !== l.origin) &&
         absolute.test(anchor.origin)) {
         anchor.setAttribute('target', '_top');
       }
@@ -62,8 +66,8 @@ if (window.parent) {
     }
 
     //change all .bit links into .spx.is links
-    for (var i = 0, len = document.links; i < len; i++) {
-      var link = document.links[i];
+    for (var i = 0, len = d.links; i < len; i++) {
+      var link = d.links[i];
 
       if (link.host.slice(-3) === 'bit') {
         link.host = link.host.slice(0, -3) + 'spx.is';
@@ -74,7 +78,7 @@ if (window.parent) {
     //find the favicon
     var favFound = false;
 
-    var headLinks = document.head.getElementsByTagName('link');
+    var headLinks = d.head.getElementsByTagName('link');
 
     for (var i = 0, len = headLinks; i < len & favFound; i++) {
       var link = headLinks[i].href;
@@ -84,7 +88,7 @@ if (window.parent) {
       }
     }
     if (!favFound) {
-      change('favicon', null, 'http://g.etfv.co/' + window.location.origin);
+      change('favicon', null, 'http://g.etfv.co/' + l.origin);
     }
   };
 }
