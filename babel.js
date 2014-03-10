@@ -56,7 +56,7 @@ if (window.parent) {
       var a = anchors[i];
 
 
-      if ((fuzzyOrigin(a.href()) !== fuzzyOrigin(window.location)) &&
+      if ((fuzzyOrigin(a) !== fuzzyOrigin(window.location)) &&
         absolute.test(a.origin)) {
         a.setAttribute('target', '_top');
       }
