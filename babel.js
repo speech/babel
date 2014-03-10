@@ -39,15 +39,15 @@ if (window.parent) {
     };
   }
 
-  change('location', null, window.location);
-  change('title', null, document.title);
-
   window.location.watch('hash', change);
   window.location.watch('pathway', change);
   window.location.watch('search', change);
   document.watch('title', change);
 
   window.onload = function() {
+
+    change('location', null, window.location);
+    change('title', null, document.title);
 
 //    change non-relative links to target top page
     var anchors = document.getElementsByTagName('a');
