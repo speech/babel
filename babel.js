@@ -56,7 +56,7 @@ if (window.parent) {
       var a = anchors[i];
 
 
-      if ((fuzzyOrigin(a) !== fuzzyOrigin(window.location)) &&
+      if ((fuzzyOrigin(a.href()) !== fuzzyOrigin(window.location)) &&
         absolute.test(a.origin)) {
         a.setAttribute('target', '_top');
       }
@@ -68,7 +68,7 @@ if (window.parent) {
       var i = url.host.lastIndexOf('.') - 1;
       var temp = url.host.slice(0, i);
       var j = temp.lastIndexOf('.') + 1;
-      return url.slice(j, url.length);
+      return url.host.slice(j, url.host.length);
     }
 
     //change all .bit links into .spx.is links
