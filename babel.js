@@ -1,23 +1,7 @@
 'use strict';
 
-if (!Object.prototype.watch) {  //don't overwrite gecko watch function
-  Object.prototype.watch = function(prop, handler) {
-    var oldval = this[prop], newval = oldval,
-      getter = function() {
-        return newval;
-      },
-      setter = function(val) {
-        oldval = newval;
-        return newval = handler.call(this, prop, oldval, val);
-      };
-    if (delete this[prop]) {
-      Object.defineProperty(this, prop, {
-        get: getter,
-        set: setter
-      });
-    }
-  };
-}
+//TODO jsDoc notations, encapsulate via anonfunc closure
+//TODO validate via YUI scripts?  Embed via Caja?
 
 function change(id, oldval, newval) {
   var type = 'location';
@@ -35,6 +19,26 @@ function change(id, oldval, newval) {
 }
 
 if (window.parent) {
+
+  if (!Object.prototype.watch) {  //don't overwrite gecko watch function
+    Object.prototype.watch = function(prop, handler) {
+      var oldval = this[prop], newval = oldval,
+        getter = function() {
+          return newval;
+        },
+        setter = function(val) {
+          oldval = newval;
+          return newval = handler.call(this, prop, oldval, val);
+        };
+      if (delete this[prop]) {
+        Object.defineProperty(this, prop, {
+          get: getter,
+          set: setter
+        });
+      }
+    };
+  }
+
   change('location', null, window.location);
   change('title', null, document.title);
 

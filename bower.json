@@ -5,7 +5,7 @@
   "authors": [
     "indolering <zachlym@indolering.com>"
   ],
-  "description": "A 1KB script to communicate URL, title and favicons info to Speech.js DNS resolvers",
+  "description": "A 1KB script to communicate URL, title and favicon info to Speech.js DNS resolvers",
   "keywords": [
     "Speech.js",
     "Speech.is"

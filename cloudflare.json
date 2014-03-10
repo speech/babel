@@ -1,8 +1,7 @@
 {
-
   "name": "Babel.js",
-  "description": "A helper to allow .bit websites to be viewed via Speech.is",
-  "version": "0.1",
+  "description": "A tiny helper which allows .bit websites to be viewed via Speech.is",
+  "version": "0.2",
   "category": "anti-censorship",
   "main": "babel.js",
   "config":{
