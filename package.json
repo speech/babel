@@ -2,7 +2,7 @@
   "name": "babel.js",
   "version": "0.2.0",
   "author":  "indolering <zachlym@indolering.com>",
-  "description": "A 1KB script to communicate URL, title and favicon info to Speech.js DNS resolvers",
+  "description": "A tiny helper script for sites being visited via Speech.js DNS resolvers",
   "keywords": [
     "Speech.js",
     "Speech.is"
@@ -19,5 +19,5 @@
     "bower_components",
     "test",
     "tests"
-  ],
+  ]
 }

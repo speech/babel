@@ -1,7 +1,7 @@
 'use strict';
 
 //TODO jsDoc notations, encapsulate via anonfunc closure
-//TODO validate via YUI scripts?  Embed via Caja?
+//TODO validate via ADSafe?  Embed via Caja?
 
 function change(id, oldVal, newVal) {
   var type = 'location';
@@ -19,10 +19,6 @@ function change(id, oldVal, newVal) {
 }
 
 if (window.parent) {
-
-  //space savers to fit under arbitrary 1KB size limit
-  var l = window.location;
-  var d = document;
 
   if (!Object.prototype.watch) {  //don't overwrite gecko watch function
     Object.prototype.watch = function(prop, handler) {
@@ -43,31 +39,41 @@ if (window.parent) {
     };
   }
 
-  change('location', null, l);
-  change('title', null, d.title);
+  change('location', null, window.location);
+  change('title', null, document.title);
 
-  l.watch('hash', change);
-  l.watch('pathway', change);
-  l.watch('search', change);
-  d.watch('title', change);
+  window.location.watch('hash', change);
+  window.location.watch('pathway', change);
+  window.location.watch('search', change);
+  document.watch('title', change);
 
   window.onload = function() {
 
     //change non-relative links to target top page
-    var anchors = d.getElementsByTagName('a');
+    var anchors = document.getElementsByTagName('a');
     var absolute = new RegExp('^(?:[a-z]+:)?//', 'i');
     for (var i = 0; i < anchors.length; i++) {
-      var anchor = anchors[i];
-      if ((anchor.origin !== l.origin) &&
-        absolute.test(anchor.origin)) {
-        anchor.setAttribute('target', '_top');
+      var a = anchors[i];
+
+
+      if ((fuzzyOrigin(a) !== fuzzyOrigin(window.location)) &&
+        absolute.test(a.origin)) {
+        a.setAttribute('target', '_top');
       }
 
+
+
+    }
+    function fuzzyOrigin(url) {
+      var i = url.host.lastIndexOf('.') - 1;
+      var temp = url.host.slice(0, i);
+      var j = temp.lastIndexOf('.') + 1;
+      return url.slice(j, url.length);
     }
 
     //change all .bit links into .spx.is links
-    for (var i = 0, len = d.links; i < len; i++) {
-      var link = d.links[i];
+    for (var i = 0, len = document.links; i < len; i++) {
+      var link = document.links[i];
 
       if (link.host.slice(-3) === 'bit') {
         link.host = link.host.slice(0, -3) + 'spx.is';
@@ -78,7 +84,7 @@ if (window.parent) {
     //find the favicon
     var favFound = false;
 
-    var headLinks = d.head.getElementsByTagName('link');
+    var headLinks = document.head.getElementsByTagName('link');
 
     for (var i = 0, len = headLinks; i < len & favFound; i++) {
       var link = headLinks[i].href;
@@ -88,7 +94,7 @@ if (window.parent) {
       }
     }
     if (!favFound) {
-      change('favicon', null, l.protocol + '//g.etfv.co/' + l.origin);
+      change('favicon', null, window.location.protocol + '//g.etfv.co/' + window.location.origin);
     }
   };
 }
