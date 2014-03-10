@@ -1,10 +1,7 @@
 {
   "name": "babel.js",
-  "main": "babel.js",
-  "version": "0.1.0",
-  "authors": [
-    "indolering <zachlym@indolering.com>"
-  ],
+  "version": "0.2.0",
+  "author":  "indolering <zachlym@indolering.com>",
   "description": "A 1KB script to communicate URL, title and favicon info to Speech.js DNS resolvers",
   "keywords": [
     "Speech.js",
@@ -12,11 +9,15 @@
   ],
   "license": "CC0",
   "homepage": "https://github.com/speech/babel",
+  "repository": {
+    "type": "git",
+    "url": "//github.com/speech/speech.js.git"
+  },
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
 }

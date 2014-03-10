@@ -3,16 +3,16 @@
 //TODO jsDoc notations, encapsulate via anonfunc closure
 //TODO validate via YUI scripts?  Embed via Caja?
 
-function change(id, oldval, newval) {
+function change(id, oldVal, newVal) {
   var type = 'location';
-  var value = location.href;
+  var value = window.location.href;
 
   if (id === 'title') {
     type = 'title';
     value = document.title;
   } else if (id === 'favicon') {
     type = 'favicon';
-    value = newval;
+    value = newVal;
   }
 
   window.parent.postMessage({type: type, value: value}, '*');
@@ -88,7 +88,7 @@ if (window.parent) {
       }
     }
     if (!favFound) {
-      change('favicon', null, 'http://g.etfv.co/' + l.origin);
+      change('favicon', null, l.protocol + '//g.etfv.co/' + l.origin);
     }
   };
 }
