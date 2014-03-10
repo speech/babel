@@ -1,17 +1,17 @@
 {
-  "name": "coop.js",
-  "main": "coop.js",
+  "name": "babel.js",
+  "main": "babel.js",
   "version": "0.1.0",
   "authors": [
     "indolering <zachlym@indolering.com>"
   ],
-  "description": "Cooperative history syncronization for Speech.js",
+  "description": "A 1KB script to communicate URL, title and favicons info to Speech.js DNS resolvers",
   "keywords": [
     "Speech.js",
     "Speech.is"
   ],
   "license": "CC0",
-  "homepage": "https://github.com/speech/coop.js",
+  "homepage": "https://github.com/speech/babel",
   "ignore": [
     "**/.*",
     "node_modules",

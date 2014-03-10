@@ -1,10 +1,10 @@
 {
 
-  "name": "Coop.js",
+  "name": "Babel.js",
   "description": "A helper to allow .bit websites to be viewed via Speech.is",
   "version": "0.1",
   "category": "anti-censorship",
-  "main": "coop.js",
+  "main": "babel.js",
   "config":{
     "details":{
       "Language": "English",
