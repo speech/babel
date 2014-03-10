@@ -50,26 +50,26 @@ if (window.parent) {
   window.onload = function() {
 
     //change non-relative links to target top page
-    var anchors = document.getElementsByTagName('a');
-    var absolute = new RegExp('^(?:[a-z]+:)?//', 'i');
-    for (var i = 0; i < anchors.length; i++) {
-      var a = anchors[i];
-
-
-      if ((fuzzyOrigin(a) !== fuzzyOrigin(window.location)) &&
-        absolute.test(a.origin)) {
-        a.setAttribute('target', '_top');
-      }
-
-
-
-    }
-    function fuzzyOrigin(url) {
-      var i = url.host.lastIndexOf('.') - 1;
-      var temp = url.host.slice(0, i);
-      var j = temp.lastIndexOf('.') + 1;
-      return url.host.slice(j, url.host.length);
-    }
+//    var anchors = document.getElementsByTagName('a');
+//    var absolute = new RegExp('^(?:[a-z]+:)?//', 'i');
+//    for (var i = 0; i < anchors.length; i++) {
+//      var a = anchors[i];
+//
+//
+//      if ((fuzzyOrigin(a) !== fuzzyOrigin(window.location)) &&
+//        absolute.test(a.origin)) {
+//        a.setAttribute('target', '_top');
+//      }
+//
+//
+//
+//    }
+//    function fuzzyOrigin(url) {
+//      var i = url.host.lastIndexOf('.') - 1;
+//      var temp = url.host.slice(0, i);
+//      var j = temp.lastIndexOf('.') + 1;
+//      return url.host.slice(j, url.host.length);
+//    }
 
     //change all .bit links into .spx.is links
     for (var i = 0, len = document.links; i < len; i++) {
