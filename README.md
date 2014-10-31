@@ -3,7 +3,7 @@ Babel.js
 
 ##TL;DR
 
-Add `<script src="http://meta.www.speech.is/babel.mini.js"></script>` to a .bit website to better compatibility with Speech.is.
+Add `<script src="//cdn.rawgit.com/speech/babel/master/babel.mini.js"></script>` to a .bit website to better compatibility with Speech.is.
 
 ##About
 
