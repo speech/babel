@@ -1,7 +1,7 @@
 {
   "name": "babel.js",
-  "version": "0.2.0",
-  "author":  "indolering <zachlym@indolering.com>",
+  "version": "0.3.0",
+  "author": "indolering <zachlym@indolering.com>",
   "description": "A tiny helper script for sites being visited via Speech.js DNS resolvers",
   "keywords": [
     "Speech.js",
@@ -19,5 +19,11 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-closure-compiler": "^0.2.7",
+    "gulp-rename": "^1.2.0",
+    "gulp-zopfli": "^0.1.1"
+  }
 }
