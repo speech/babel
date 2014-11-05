@@ -1,104 +1,130 @@
 'use strict';
 
-//TODO jsDoc notations, encapsulate via anonfunc closure
-//TODO validate via ADSafe?  Embed via Caja?
+//TODO: unit test observe and popstate
+//TODO: encapsulate via anonfunc
+//TODO: detect .bit connectivity and redirect
+//TODO: check parent
+if (window.parent){
 
-function change(id, oldVal, newVal) {
-  var type = 'location';
-  var value = window.location.href;
+  window.addEventListener('popstate', function(event) {
+    change('location', window.location.href);
+  });
 
-  if (id === 'title') {
-    type = 'title';
-    value = document.title;
-  } else if (id === 'favicon') {
-    type = 'favicon';
-    value = newVal;
-  }
+  var observer = new window.MutationObserver(function(mutations) {
+    change('title', document.title);
+  });
 
-  window.parent.postMessage({type: type, value: value}, '*');
+  observer.observe(document.querySelector('head > title'), {
+    subtree: true,
+    characterData: true,
+    childList: true
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+    change('location', window.location.href);
+    change('title', document.title);
+    getFavicon(change);
+    fixLinks();
+  });
 }
 
-if (window.parent) {
+/**
+ * Passes changes up to Speech.js.
+ * @param type {string}
+ * @param newVal {*}
+ */
+function change(type, newVal) {
+  window.parent.postMessage({type: type, value: newVal}, '*');
+}
 
-  if (!Object.prototype.watch) {  //don't overwrite gecko watch function
-    Object.prototype.watch = function(prop, handler) {
-      var oldval = this[prop], newval = oldval,
-        getter = function() {
-          return newval;
-        },
-        setter = function(val) {
-          oldval = newval;
-          return newval = handler.call(this, prop, oldval, val);
-        };
-      if (delete this[prop]) {
-        Object.defineProperty(this, prop, {
-          get: getter,
-          set: setter
-        });
+/**
+ * Gets the favicons or generates lookup for URL for custom favicon construction.
+ * @param callback {Function}
+ */
+function getFavicon (callback){
+
+  var links = document.head.getElementsByTagName('link');
+  var favicons = [];
+
+  for(var i = 0, len = links.length; i < len; i++){
+    var link = links[i];
+    if(link.hasAttribute('rel')){
+      var rel = link.getAttribute('rel');
+      if(rel === "apple-touch-icon" || rel ==="icon"){
+        favicons.push({html:link.outerHTML,href:'http://localhost:63342/babel/test/favicon.png'});
       }
-    };
+    }
   }
 
-  window.location.watch('hash', change);
-  window.location.watch('pathway', change);
-  window.location.watch('search', change);
-  document.watch('title', change);
+  if (favicons.length === 0){
+    favicons = [{
+      html:'<link rel="icon" type="image/x-icon" href="favicon.ico">',
+      href: window.location.origin + '/favicon.ico'
+    }]
+  }
 
-  window.onload = function() {
+  callback('favicons', favicons);
 
+}
 
+/**
+ * Changes converts .bit link and changes non-relative links to target the iFrame parent.
+ */
+function fixLinks(){
 
-//    change non-relative links to target top page
-    var anchors = document.getElementsByTagName('a');
-    var absolute = new RegExp('^(?:[a-z]+:)?//', 'i');
-    for (var i = 0; i < anchors.length; i++) {
-      var a = anchors[i];
+  var links = document.links;
 
+  var url = window.location.hostname.split('.');
+  if(url.length > 2 &&  url[url.length - 2].length < 4){ //if SLD
+    url = url.slice(-3);
+  } else {
+    url = url.slice(-2);
+  }
 
-//      if ((fuzzyOrigin(a) !== fuzzyOrigin(window.location)) &&
-//        absolute.test(a.origin)) {
-//        a.setAttribute('target', '_top');
-//      }
-      //turned off for now, must fix local/absolute link issue
+  for(var i = 0, len = links.length; i < len; i++){
+    var link = links[i];
 
+    /**
+     * if .bit site -> spx.is -> if !target -> retarget
+     * if !target && absolute link -> if rel external/nofollow||same origin -> retarget
+     */
 
+    if(link.hostname.slice(-3) === 'bit'){
+      link.hostname = link.hostname.slice(0, -3) + 'spx.is';
+      if(!link.target){
+        retargetLink(link);
+      }
+    } else if (!link.target) {
+      var absolute = link.href.slice(0,1) === "//" || link.href.slice(0,4) === "http";
+      if(absolute){
+        var compareHref = true;
+        if(link.hasAttribute('rel')){
+          var rel = link.getAttribute('rel');
+          if(rel.indexOf('external') > -1 || rel.indexOf('nofollow') > -1 ){
+            retargetLink(link);
+            compareHref = false;
+          }
+        }
+        if(compareHref){
+          var domain = link.hostname.split('.').slice(-url.length);
+          var same = domain.length === url.length;
+          var count = 0;
 
-    }
-    function fuzzyOrigin(url) {
-      var i = url.host.lastIndexOf('.') - 1;
-      var temp = url.host.slice(0, i);
-      var j = temp.lastIndexOf('.') + 1;
-      return url.host.slice(j, url.host.length);
-    }
+          while(same && count < domain.length){
+            same = domain[count] === url[count];
+            count++;
+          }
 
-    //change all .bit links into .spx.is links
-    for (var i = 0, len = document.links; i < len; i++) {
-      var link = document.links[i];
-
-      if (link.host.slice(-3) === 'bit') {
-        link.host = link.host.slice(0, -3) + 'spx.is';
+          if(!same){
+            retargetLink(link);
+          }
+        }
       }
     }
 
+  }
 
-    //find the favicon
-    var favFound = false;
-
-    var headLinks = document.head.getElementsByTagName('link');
-
-    for (var i = 0, len = headLinks; i < len & favFound; i++) {
-      var link = headLinks[i].href;
-      if (link.host.slice(-3) === 'ico') {
-        change('favicon', null, headLinks[i]);
-        favFound = true;
-      }
-    }
-    if (!favFound) {
-      change('favicon', null, window.location.protocol + '//g.etfv.co/' + window.location.origin);
-    }
-
-    change('location', null, window.location);
-    change('title', null, document.title);
-
-  };
+  function retargetLink(link){
+    link.setAttribute('target', '_top');
+  }
 }
