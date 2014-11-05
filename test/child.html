@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>TestTitle</title>
+
+  <script src="../babel.js"></script>
+
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+<div class="container"><div class="row">
+  <div class=".col-sm-4">
+    <h2>URL Manipulation</h2>
+    <ul>
+      <li><a href="#hashOne">hash one</a></li>
+      <li><a href="#hashTwo">hash two</a></li>
+      <li><a href="javascript:void(0);" onclick="window.location.search = 'searchOne'">search one</a></li>
+      <li><a href="javascript:void(0);" onclick="window.location.search = 'searchTwo'">search two</a></li>
+      <li><a href="" onclick="window.location.pathname = 'pathOne'">path one</a></li>
+      <li><a href="" onclick="window.location.pathname = 'pathTwo'">path two</a></li>
+      <li><a href="" onclick="window.history.pushState({ foo: 'bar' }, 'page 2', 'bar.html');">push state</a></li>
+    </ul>
+  </div>
+
+  <div class=".col-sm-4">
+    <h2>Location links</h2>
+    <ul>
+      <li><a class="external" href="//localhost">localhost</a></li>
+
+      <li><a class="relative" href="foo.html">foo</a></li>
+      <li><a class="relative" href="foo.html">foo</a></li>
+      <li><a class="relative" href="foo.html">foo</a></li>
+
+      <li><a class="absolute" href="//indolering.com">//indolering.com</a></li>
+      <li><a class="absolute" id="relexternal" href="//indolering.com" rel="external">//indolering.com rel=external</a></li>
+      <li><a class="absolute" id="relnofollow" href="//indolering.com" rel="nofollow">//indolering.com rel=nofollow</a></li>
+      <li><a class="absolute" id="relnofollowexternal" href="//indolering.com" rel="nofollow external">//indolering.com rel=nofollow</a></li>
+      <li><a class="absolute" href="//yahoo.com">//yahoo.com</a></li>
+      <li><a class="absolute" href="//telegraph.co.uk">//telegraph.co.uk</a></li>
+      <li><a class="absolute" href="http://yahoo.com">http://yahoo.com</a></li>
+      <li><a class="absolute" href="https://telegraph.co.uk">https://telegraph.co.uk</a></li>
+    </ul>
+  </div>
+
+
+  <div class=".col-sm-4">
+    <h2>.bit links</h2>
+    <ul>
+      <li><a href="//localhost">localhost link</a></li>
+      <li><a href="//indolering.com">.com link</a></li>
+      <li><a href="//yahoo.com">yahoo.com</a></li>
+      <li><a href="//telegraph.co.uk">co.uk link</a></li>
+      <li><a href="//telegraph.spx.is">spx.is link</a></li>
+      <li><a href="//indolering.bit">.bit link</a></li>
+    </ul>
+  </div>
+
+</div>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.15.0.css">
+<script src="//code.jquery.com/qunit/qunit-1.15.0.js"></script>
+<script>
+
+  QUnit.test("Favicons Selected", function(assert){
+    babel.getFavicon(function(type, favicons){
+      assert.ok(type === "favicons");
+      assert.ok(favicons.length === 2);
+    });
+  });
+
+
+  //TODO:test <a> changes
+</script>
+  </div>
+</body>
+</html>

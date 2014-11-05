@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+  <script>
+
+    function mess(type, value){
+
+      $( '#terminal' ).prepend( '<div class="message">' + type + ': ' + value + '</div>');
+    }
+
+    window.addEventListener("message", function(event){
+      console.log(event,event.data);
+      mess(event.data.type,event.data.value);
+    }, false);
+  </script>
+
+  <style>
+    #terminal {
+      font-family: monospace;
+      color: white;
+      font-size: 12pt;
+      padding: .5em;
+      width: 100%;
+      height: 100%;
+      background-color: #000000;
+      overflow: scroll;
+    }
+
+    .message {
+      border-top:1px solid green;
+    }
+  </style>
+
+</head>
+<body>
+
+  <iframe id="speech" seamless="" width="100%" height="300px" allowfullscreen="true" src="child.html"></iframe>
+  <div id="terminal" style="">
+
+  </div>
+</body>
+</html>
