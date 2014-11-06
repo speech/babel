@@ -3,8 +3,24 @@
 //TODO: unit test observe and popstate
 //TODO: encapsulate via anonfunc
 //TODO: detect .bit connectivity and redirect
-//TODO: check parent
+
+var nonce;
+
 if (window.parent){
+
+  //TODO: wait for message from Speech.js in parent browsing context?
+
+  if (document.readyState === 'complete' || document.readyState === 'loaded') {
+    //TODO: test if necessary.
+    setup();
+  } else {
+    document.addEventListener("DOMContentLoaded", setup);
+  }
+
+}
+
+//event timeout request nonce ~100 milliseconds
+function setup(){
 
   window.addEventListener('popstate', function(event) {
     change('location', window.location.href);
@@ -20,21 +36,23 @@ if (window.parent){
     childList: true
   });
 
-  document.addEventListener("DOMContentLoaded", function() {
-    change('location', window.location.href);
-    change('title', document.title);
-    getFavicon(change);
-    fixLinks();
-  });
+
+  change('location', window.location.href);
+  change('title', document.title);
+  getFavicon(change);
+  fixLinks();
 }
 
 /**
  * Passes changes up to Speech.js.
  * @param type {string}
- * @param newVal {*}
+ * @param value {*}
  */
-function change(type, newVal) {
-  window.parent.postMessage({type: type, value: newVal}, '*');
+function change(type, value) {
+  var message = {};
+  message['type'] = type;
+  message['value'] = value;
+  window.parent.postMessage(message, '*');
 }
 
 /**
@@ -51,16 +69,19 @@ function getFavicon (callback){
     if(link.hasAttribute('rel')){
       var rel = link.getAttribute('rel');
       if(rel === "apple-touch-icon" || rel ==="icon"){
-        favicons.push({html:link.outerHTML,href:'http://localhost:63342/babel/test/favicon.png'});
+        var favi = {};
+        favi['html'] = link.outerHTML;
+        favi['href'] = link.href;
+        favicons.push(favi);
       }
     }
   }
 
   if (favicons.length === 0){
-    favicons = [{
-      html:'<link rel="icon" type="image/x-icon" href="favicon.ico">',
-      href: window.location.origin + '/favicon.ico'
-    }]
+    var favicon = {};
+    favicon['html'] = '<link rel="icon" type="image/x-icon" href="favicon.ico">';
+    favicon['href'] =  window.location.origin + '/favicon.ico';
+    favicons = [favicon];
   }
 
   callback('favicons', favicons);
@@ -127,4 +148,15 @@ function fixLinks(){
   function retargetLink(link){
     link.setAttribute('target', '_top');
   }
+}
+
+/** @define {boolean} */
+var DEBUG = true;
+
+if(DEBUG && typeof window["babel"] === 'undefined'){
+  var babel = {};
+  babel.change = change;
+  babel.getFavicon = getFavicon;
+  babel.fixLinks = fixLinks;
+  window["babel"] = babel;
 }
