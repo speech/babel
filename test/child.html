@@ -5,6 +5,7 @@
   <title>TestTitle</title>
 
   <script src="../babel.js"></script>
+  <!--<script src="../babel.mini.js"></script>-->
 
   <link rel="icon" type="image/png" href="favicon.png"/>
   <link rel="apple-touch-icon" href="favicon.png">
@@ -24,10 +25,10 @@
       <li><a href="#hashOne">hash one</a></li>
       <li><a href="#hashTwo">hash two</a></li>
       <li><a href="javascript:void(0);" onclick="window.location.search = 'searchOne'">search one</a></li>
-      <li><a href="javascript:void(0);" onclick="window.location.search = 'searchTwo'">search two</a></li>
-      <li><a href="" onclick="window.location.pathname = 'pathOne'">path one</a></li>
-      <li><a href="" onclick="window.location.pathname = 'pathTwo'">path two</a></li>
-      <li><a href="" onclick="window.history.pushState({ foo: 'bar' }, 'page 2', 'bar.html');">push state</a></li>
+      <li><a href="javascript:void(0);" onclick="window.location.search = 'searchTwo'">search two</a>
+      <!-- not working -->
+      <li><a href="javascript:void(0);" onclick="window.history.pushState({ foo: 'bar' }, 'page 2', 'bar.html');">push state</a></li>
+      <!-- / not working -->
     </ul>
   </div>
 
@@ -72,7 +73,7 @@
 <script>
 
   QUnit.test("Favicons Selected", function(assert){
-    babel.getFavicon(function(type, favicons){
+    getFavicon(function(type, favicons){
       assert.ok(type === "favicons");
       assert.ok(favicons.length === 2);
     });
