@@ -10,9 +10,10 @@ gulp.task('compress', function() {
       compilerPath: 'bower_components/closure-compiler/lib/vendor/compiler.jar',
       fileName: 'babel.mini.js',
       compilerFlags:{
+        define:'DEBUG=false',
         compilation_level: 'ADVANCED_OPTIMIZATIONS',
         language_in:'ECMASCRIPT5_STRICT',
-        create_source_map: 'babel.map'
+        create_source_map: 'babel.js.map'
       }
     }))
     .pipe(gulp.dest('./'));
@@ -33,7 +34,8 @@ gulp.task('debug', function() {
 gulp.src('babel.js')
   .pipe(closure({
     compilerPath: 'bower_components/closure-compiler/lib/vendor/compiler.jar',
-    fileName: 'build.js',
+    fileName: 'babel-debug.js',
+    define:'DEBUG=0',
     compilerFlags:{
       compilation_level: 'WHITESPACE_ONLY',
       formatting:'pretty_print',
