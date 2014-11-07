@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <div id="favicons">
+
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+  <script>
+
+    function mess(type, value){
+
+      $( '#terminal' ).prepend( '<div class="message">' + type + ': ' + value + '</div>');
+    }
+
+    //note: this only prevents pranksters in other tabs/windows from sending in faulty titles, etc.
+    //if you want to control who is framing your site, set the x-frames-options header!
+    var crypt = window.crypto || window.msCrypto;
+    var nonces = {
+      speech:crypt.getRandomValues(new Uint32Array(1))[0],
+      babel: null,
+      nonce: null
+    };
+
+    /**
+     * babel -> nonce
+     * <-speech nonce+nonce
+     * babel -> nonce+nonce
+     */
+    window.addEventListener('message', function(message) {
+      if(nonce && message.nonce === nonce){
+        //do work
+      } else {
+
+      }
+      console.log(message.data);
+      mess(event.data.type,event.data.value);
+    });
+
+
+
+
+  </script>
+
+  <style>
+    #terminal {
+      font-family: monospace;
+      color: white;
+      font-size: 12pt;
+      padding: .5em;
+      width: 100%;
+      height: 100%;
+      background-color: #000000;
+      overflow: scroll;
+    }
+
+    .message {
+      border-top:1px solid green;
+    }
+  </style>
+
+</head>
+<body>
+
+  <iframe id="speech" seamless="" width="100%" height="300px" allowfullscreen="true" src="child.html"></iframe>
+  <div id="terminal" style="">
+
+  </div>
+<script>
+  document.getElementById('speech').contentWindow.postMessage(init,'*');
+
+</script>
+</body>
+</html>
